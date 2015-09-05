@@ -1,0 +1,20 @@
+#LobbyManager Default Configuration
+spawn:
+  x: 0
+  y: 65
+  z: 0
+  world: world
+  yaw: 0
+  pitch: 0
+minYLevel: 40
+fallMessage: "Alors tu ne sais pas marcher ?"
+gamemodeOnJoin: 2
+Inventory:
+  0:
+    item:
+      ID: PAPER
+      name: "Test du plugin !"
+      enchant:
+        name: LURE
+        level: 0
+    command: say Le LobbyManager by Pelt10 fonctionne !

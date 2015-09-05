@@ -1,0 +1,12 @@
+main: fr.pelt10.lobbymanager.LobbyManager
+name: LobbyManager
+version: 1.0
+description: Manage the lobby
+author: Pelt10
+permissions:
+   lobbymanager.gmBypass:
+     description: User with this permissions can ByPass the Auto-GameMode.
+     default: op
+   lobbymanager.useInventory:
+     description: User with this permissions can change her inventory.
+     default: op
