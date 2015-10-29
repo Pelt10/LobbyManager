@@ -1,0 +1,6 @@
+#LobbyManager's default english language file
+FallMessage: "You don't know walk ?"
+NoPermission: "You don't have permission to do this !"
+SetSpawn: "Spawn set!"
+ReloadInventory: "Following a change in the server, a slowdown will be felt !"
+ReloadInventorySuccessful: "The inventories have been updated with respect to the configuration."

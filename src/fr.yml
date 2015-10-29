@@ -1,0 +1,6 @@
+#Fichier francais par defaut pour LobbyManager
+FallMessage: "Alors tu ne sais pas marcher ?"
+NoPermission: "Vous n'avez pas la permission pour faire cela !"
+SetSpawn: "Spawn chang\u00e9 !"
+ReloadInventory: "Suite \u00e0 une modification du serveur, un ralentissement va se faire sentir !"
+ReloadInventorySuccessful: "Inventaire mis \u00e0 jour vis \u00e0 vis de la configuration."

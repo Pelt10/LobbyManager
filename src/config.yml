@@ -1,20 +1,43 @@
 #LobbyManager Default Configuration
-spawn:
-  x: 0
-  y: 65
-  z: 0
-  world: world
-  yaw: 0
-  pitch: 0
-minYLevel: 40
-fallMessage: "Alors tu ne sais pas marcher ?"
-gamemodeOnJoin: 2
+
+#Language of serveur [available : en, fr].
+lang: en
+
+#If enable players can't have any damage.
+noDamage:
+  enable: true
+
+#If true players can't drop item.
+antidrop:
+  enable: true
+
+#If true players will not fall below the given value.
+noFall:
+  enable: true
+  level: 40
+
+join:
+  #If enable players join the game in the given gamemode.
+  gamemode:
+    enable: false
+    gamemode: 2
+  #If enable players who join the game receive title and subtitle.
+  title:
+    enable: true
+    title: Welcome on this server !
+    subtitle: This server use LobbyManager !
+
+#If enable was true, inventory was send to players
 Inventory:
-  0:
-    item:
-      ID: PAPER
-      name: "Test du plugin !"
-      enchant:
-        name: LURE
-        level: 0
-    command: say Le LobbyManager by Pelt10 fonctionne !
+  control:
+    enable: true
+  give:
+    enable: true
+    '0':
+      item:
+        ID: PAPER
+        name: "server's menu"
+        enchant:
+          name: LURE
+          level: 0
+      command: say LobbyManager work good !
