@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.pelt10.lobbymanager.command.ReloadInventoryCmd;
+import fr.pelt10.lobbymanager.command.ReloadInventoryCommand;
 import fr.pelt10.lobbymanager.command.SetSpawnCommand;
 import fr.pelt10.lobbymanager.command.SpawnCommand;
 import fr.pelt10.lobbymanager.inventory.InventoryManager;
@@ -64,7 +64,7 @@ public class LobbyManager extends JavaPlugin {
 	// commands
 	this.getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
 	this.getCommand("spawn").setExecutor(new SpawnCommand(this));
-	this.getCommand("reloadinventory").setExecutor(new ReloadInventoryCmd());
+	this.getCommand("reloadinventory").setExecutor(new ReloadInventoryCommand(this));
 	super.onEnable();
     }
 
