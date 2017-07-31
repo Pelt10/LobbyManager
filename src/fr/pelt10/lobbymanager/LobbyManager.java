@@ -28,7 +28,7 @@ public class LobbyManager extends JavaPlugin {
     @Override
     public void onEnable() {
 	// Configuration
-	saveConfig();
+	saveDefaultConfig();
 	FileConfiguration configuration = getConfig();
 	language = new Language(this, configuration.getString("lang"));
 	spawnConfig = new SpawnConfig(this);
