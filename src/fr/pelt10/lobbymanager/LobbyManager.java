@@ -13,7 +13,7 @@ import fr.pelt10.lobbymanager.command.SetSpawnCmd;
 import fr.pelt10.lobbymanager.command.SpawnCmd;
 import fr.pelt10.lobbymanager.inventory.InventoryManager;
 import fr.pelt10.lobbymanager.listener.OnPlayerInteractEvent;
-import fr.pelt10.lobbymanager.listener.OnPlayerInventoryEvent;
+import fr.pelt10.lobbymanager.listener.PlayerInventory;
 import fr.pelt10.lobbymanager.listener.PlayerConnect;
 import fr.pelt10.lobbymanager.listener.PlayerMove;
 
@@ -36,10 +36,11 @@ public class LobbyManager extends JavaPlugin {
 	PluginManager pluginManager = getServer().getPluginManager();
 	pluginManager.registerEvents(new PlayerConnect(this), this);
 	pluginManager.registerEvents(new PlayerMove(this), this);
+	pluginManager.registerEvents(new OnPlayerInteractEvent(), this);
 	
-	
-	if (config.getBoolean("Inventory.control.enable"))
-	    pluginManager.registerEvents(new OnPlayerInventoryEvent(), this);
+	//Inventory control module
+	if (configuration.getBoolean("inventory.control.enable"))
+	    pluginManager.registerEvents(new PlayerInventory(), this);
 	
 	//noDamage module
 	if (configuration.getBoolean("noDamage.enable")) {
@@ -59,8 +60,6 @@ public class LobbyManager extends JavaPlugin {
 		    event.setCancelled(true);
 		}
 	    }, this);
-	
-	pluginManager.registerEvents(new OnPlayerInteractEvent(), this);
 
 	// commands
 	this.getCommand("setspawn").setExecutor(new SetSpawnCmd());
