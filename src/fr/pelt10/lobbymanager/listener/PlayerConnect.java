@@ -61,13 +61,13 @@ public class PlayerConnect implements Listener {
 
     //TODO Move and create Reflexion
     private void sendTitle(Player player, String title, String subtitle) {
-	title = title.replace("'", "\\'");
-	subtitle = subtitle.replace("'", "\\'");
+	title = title.replace("\"", "\\\"");
+	subtitle = subtitle.replace("\"", "\\\"");
 
 	CraftPlayer craftplayer = (CraftPlayer) player;
 	PlayerConnection connection = craftplayer.getHandle().playerConnection;
-	IChatBaseComponent titleJSON = ChatSerializer.a("{'text': '" + title + "'}");
-	IChatBaseComponent subtitleJSON = ChatSerializer.a("{'text': '" + subtitle + "'}");
+	IChatBaseComponent titleJSON = ChatSerializer.a("{\"text\": \"" + title + "\"}");
+	IChatBaseComponent subtitleJSON = ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
 
 	PacketPlayOutTitle timesPacket = new PacketPlayOutTitle(EnumTitleAction.TIMES, titleJSON, 10, 20, 10);
 	PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(EnumTitleAction.TITLE, titleJSON);
