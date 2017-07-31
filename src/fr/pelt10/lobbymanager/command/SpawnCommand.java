@@ -16,12 +16,10 @@ public class SpawnCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	if (!(sender instanceof Player)) {
+	if (sender instanceof Player) {
+	    ((Player) sender).teleport(lobbyManager.getSpawnConfig().getSpawnLocation());
 	    return true;
 	}
-
-	((Player) sender).teleport(lobbyManager.getSpawnConfig().getSpawnLocation());
-	return true;
+	return false;
     }
-
 }
