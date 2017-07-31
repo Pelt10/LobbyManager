@@ -1,5 +1,7 @@
 package fr.pelt10.lobbymanager;
 
+import java.util.Arrays;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +18,7 @@ import fr.pelt10.lobbymanager.listener.OnPlayerInteractEvent;
 import fr.pelt10.lobbymanager.listener.PlayerInventory;
 import fr.pelt10.lobbymanager.listener.PlayerConnect;
 import fr.pelt10.lobbymanager.listener.PlayerMove;
+import fr.pelt10.lobbymanager.utils.DCommand;
 
 public class LobbyManager extends JavaPlugin {
     private Language language;
@@ -62,9 +65,9 @@ public class LobbyManager extends JavaPlugin {
 	    }, this);
 
 	// commands
-	this.getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
-	this.getCommand("spawn").setExecutor(new SpawnCommand(this));
-	this.getCommand("reloadinventory").setExecutor(new ReloadInventoryCommand(this));
+	new DCommand("setspawn", "/setspawn", "This command allow you to set Spawn Location", "lobbymanager.setspawn", Arrays.asList(), new SetSpawnCommand(this), this);
+	new DCommand("spawn", "/spawn", "Swap to Spawn !", "lobbymanager.spawn", Arrays.asList(), new SpawnCommand(this), this);
+	new DCommand("reloadinventory", "/reloadinventory", "This command resend inventory", "lobbymanager.reloadinventory", Arrays.asList(), new ReloadInventoryCommand(this), this);
 	super.onEnable();
     }
 
