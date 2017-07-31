@@ -1,4 +1,4 @@
-package fr.pelt10.lobbymanager.event;
+package fr.pelt10.lobbymanager.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

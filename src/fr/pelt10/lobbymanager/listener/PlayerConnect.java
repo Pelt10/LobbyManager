@@ -1,4 +1,4 @@
-package fr.pelt10.lobbymanager.event;
+package fr.pelt10.lobbymanager.listener;
 
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 
-public class OnPlayerConnectEvent implements Listener {
+public class PlayerConnect implements Listener {
 	@EventHandler
 	public void onPlayerConnect(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
