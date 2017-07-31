@@ -1,12 +1,10 @@
 package fr.pelt10.lobbymanager;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,12 +12,10 @@ import fr.pelt10.lobbymanager.command.ReloadInventoryCmd;
 import fr.pelt10.lobbymanager.command.SetSpawnCmd;
 import fr.pelt10.lobbymanager.command.SpawnCmd;
 import fr.pelt10.lobbymanager.inventory.InventoryManager;
-import fr.pelt10.lobbymanager.listener.OnPlayerDamageEntityEvent;
-import fr.pelt10.lobbymanager.listener.OnPlayerDropItemEvent;
 import fr.pelt10.lobbymanager.listener.OnPlayerInteractEvent;
 import fr.pelt10.lobbymanager.listener.OnPlayerInventoryEvent;
-import fr.pelt10.lobbymanager.listener.PlayerMove;
 import fr.pelt10.lobbymanager.listener.PlayerConnect;
+import fr.pelt10.lobbymanager.listener.PlayerMove;
 
 public class LobbyManager extends JavaPlugin {
     private Language language;
