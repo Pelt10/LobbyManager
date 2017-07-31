@@ -1,62 +1,59 @@
 package fr.pelt10.lobbymanager;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpawnConfig {
-	private Plugin plugin = null;
+    private FileConfiguration config;
+    private JavaPlugin javaPlugin;
+    private static final String FILE_NAME = "spawn.yml";
+    private static final String CONFIG_PREFIX = "spawn.";
 
-	private File configFile = null;
-	private FileConfiguration config = null;
+    public SpawnConfig(JavaPlugin javaPlugin) {
+	this.javaPlugin = javaPlugin;
 
-	public SpawnConfig(Plugin pl) {
-		plugin = pl;
-		configFile = new File(this.plugin.getDataFolder(), "spawn.yml");
-		
-		this.load();
-		this.saveDefault();
-	}
+	// Load config
+	config = YamlConfiguration.loadConfiguration(new File(javaPlugin.getDataFolder(), FILE_NAME));
 
-	public void load() {
-		config = YamlConfiguration.loadConfiguration(configFile);
+	// Load default config
+	try (InputStream defaultConfigStream = javaPlugin.getResource(FILE_NAME)) {
+	    YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream));
 
-		InputStream defaultConfigStream = this.plugin.getResource("spawn.yml");
-		if (defaultConfigStream != null) {
-			@SuppressWarnings("deprecation")
-			YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(defaultConfigStream);
-			config.setDefaults(defaultConfig);
-		}
+	    config.setDefaults(defaultConfig);
+	    javaPlugin.saveResource(FILE_NAME, false);
+	} catch (IOException e) {
+	    throw new IllegalStateException("spawn.yml not find in jar !", e);
 	}
+    }
 
-	public void saveDefault() {
-		if (!configFile.exists()) {
-			plugin.saveResource("spawn.yml", false);
-		}
-	}
+    public Location getSpawnLocation() {
+	return new Location(javaPlugin.getServer().getWorld(config.getString(CONFIG_PREFIX + "world")),
+			    config.getDouble(CONFIG_PREFIX + "x"),
+			    config.getDouble(CONFIG_PREFIX + "y"),
+			    config.getDouble(CONFIG_PREFIX + "z"),
+		     (float)config.getDouble(CONFIG_PREFIX + "pitch"),
+		     (float)config.getDouble(CONFIG_PREFIX + "yaw"));
+    }
 
-	public String getString(String path) {
-		return config.getString(path);
+    public void setSpawnLocation(Location location) {
+	try {
+	    config.set(CONFIG_PREFIX + "world", location.getWorld().getName());
+	    config.set(CONFIG_PREFIX + "x", location.getX());
+	    config.set(CONFIG_PREFIX + "y", location.getY());
+	    config.set(CONFIG_PREFIX + "z", location.getZ());
+	    config.set(CONFIG_PREFIX + "picth", location.getPitch());
+	    config.set(CONFIG_PREFIX + "yaw", location.getYaw());
+	    config.save(FILE_NAME);
+	} catch (IOException e) {
+	    javaPlugin.getLogger().log(Level.CONFIG, e.getMessage(), e);
 	}
-	
-	public double getDouble(String path){
-		return config.getDouble(path);
-	}
-	
-	public void set(String path, Object value){
-		config.set(path, value);
-	}
-	
-	public void save(){
-		try {
-			config.save(configFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    }
 }
