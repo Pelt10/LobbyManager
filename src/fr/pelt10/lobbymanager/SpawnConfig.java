@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SpawnConfig {
     private FileConfiguration config;
     private JavaPlugin javaPlugin;
+    private File fileConfig;
     private static final String FILE_NAME = "spawn.yml";
     private static final String CONFIG_PREFIX = "spawn.";
     private Location spawnLocation;
@@ -22,7 +23,8 @@ public class SpawnConfig {
 	this.javaPlugin = javaPlugin;
 
 	// Load config
-	config = YamlConfiguration.loadConfiguration(new File(javaPlugin.getDataFolder(), FILE_NAME));
+	fileConfig = new File(javaPlugin.getDataFolder(), FILE_NAME);
+	config = YamlConfiguration.loadConfiguration(fileConfig);
 
 	// Load default config
 	try (InputStream defaultConfigStream = javaPlugin.getResource(FILE_NAME)) {
@@ -38,8 +40,8 @@ public class SpawnConfig {
                 		    config.getDouble(CONFIG_PREFIX + "x"),
                 		    config.getDouble(CONFIG_PREFIX + "y"),
                 		    config.getDouble(CONFIG_PREFIX + "z"),
-                	     (float)config.getDouble(CONFIG_PREFIX + "pitch"),
-                	     (float)config.getDouble(CONFIG_PREFIX + "yaw"));
+                	     (float)config.getDouble(CONFIG_PREFIX + "yaw"),
+                	     (float)config.getDouble(CONFIG_PREFIX + "picth"));
     }
 
     public Location getSpawnLocation() {
@@ -55,7 +57,7 @@ public class SpawnConfig {
 	    config.set(CONFIG_PREFIX + "z", location.getZ());
 	    config.set(CONFIG_PREFIX + "picth", location.getPitch());
 	    config.set(CONFIG_PREFIX + "yaw", location.getYaw());
-	    config.save(FILE_NAME);
+	    config.save(fileConfig);
 	} catch (IOException e) {
 	    javaPlugin.getLogger().log(Level.CONFIG, e.getMessage(), e);
 	}
