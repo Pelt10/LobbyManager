@@ -28,16 +28,16 @@ join:
     subtitle: This server use LobbyManager !
 
 #If enable was true, inventory was send to players
-Inventory:
+inventory:
   control:
     enable: true
   give:
     enable: true
-    '0':
+    0:
       item:
         ID: PAPER
         name: "server's menu"
         enchant:
           name: LURE
           level: 0
-      command: say LobbyManager work good !
+      action: say LobbyManager work good !
