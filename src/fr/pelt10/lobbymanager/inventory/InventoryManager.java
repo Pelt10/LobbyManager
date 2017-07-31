@@ -25,11 +25,11 @@ public class InventoryManager {
 	// Load hotbar
 	for (int i = 0; i < 9; i++) {
 	    if (config.contains(PREFIX_GIVE + i)) {
-		hotbar[i] = new CustomItem(Material.valueOf(config.getString(PREFIX_GIVE + i + "item.ID")),
-			config.getString(PREFIX_GIVE + i + "action"),
-			config.getString(PREFIX_GIVE + i + "item.name", ""),
-			config.getString(PREFIX_GIVE + i + "item.enchant.name", ""),
-			config.getInt(PREFIX_GIVE + i + "item.enchant.level", -1));
+		hotbar[i] = new CustomItem(Material.valueOf(config.getString(PREFIX_GIVE + i + ".item.ID")),
+			config.getString(PREFIX_GIVE + i + ".action"),
+			config.getString(PREFIX_GIVE + i + ".item.name", ""),
+			config.getString(PREFIX_GIVE + i + ".item.enchant.name", ""),
+			config.getInt(PREFIX_GIVE + i + ".item.enchant.level", -1));
 	    }
 	}
     }
