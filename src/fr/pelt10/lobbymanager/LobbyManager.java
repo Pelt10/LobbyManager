@@ -14,7 +14,7 @@ import fr.pelt10.lobbymanager.command.ReloadInventoryCommand;
 import fr.pelt10.lobbymanager.command.SetSpawnCommand;
 import fr.pelt10.lobbymanager.command.SpawnCommand;
 import fr.pelt10.lobbymanager.inventory.InventoryManager;
-import fr.pelt10.lobbymanager.listener.OnPlayerInteractEvent;
+import fr.pelt10.lobbymanager.listener.PlayerInteract;
 import fr.pelt10.lobbymanager.listener.PlayerInventory;
 import fr.pelt10.lobbymanager.listener.PlayerConnect;
 import fr.pelt10.lobbymanager.listener.PlayerMove;
@@ -39,7 +39,7 @@ public class LobbyManager extends JavaPlugin {
 	PluginManager pluginManager = getServer().getPluginManager();
 	pluginManager.registerEvents(new PlayerConnect(this), this);
 	pluginManager.registerEvents(new PlayerMove(this), this);
-	pluginManager.registerEvents(new OnPlayerInteractEvent(this), this);
+	pluginManager.registerEvents(new PlayerInteract(this), this);
 	
 	//Inventory control module
 	if (configuration.getBoolean("inventory.control.enable"))

@@ -12,10 +12,10 @@ import org.bukkit.inventory.PlayerInventory;
 import fr.pelt10.lobbymanager.LobbyManager;
 import fr.pelt10.lobbymanager.inventory.CustomItem;
 
-public class OnPlayerInteractEvent implements Listener {
+public class PlayerInteract implements Listener {
     private LobbyManager lobbyManager;
     
-    public OnPlayerInteractEvent(LobbyManager lobbyManager) {
+    public PlayerInteract(LobbyManager lobbyManager) {
 	this.lobbyManager = lobbyManager;
     }
     
