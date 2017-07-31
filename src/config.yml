@@ -20,7 +20,7 @@ join:
   #If enable players join the game in the given gamemode.
   gamemode:
     enable: false
-    gamemode: 2
+    gamemode: ADVENTURE
   #If enable players who join the game receive title and subtitle.
   title:
     enable: true

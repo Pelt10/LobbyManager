@@ -1,53 +1,81 @@
 package fr.pelt10.lobbymanager.listener;
 
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import java.util.Objects;
+
+import org.bukkit.GameMode;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import fr.pelt10.lobbymanager.LobbyManager;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
+import net.minecraft.server.v1_12_R1.PacketPlayOutTitle.EnumTitleAction;
+import net.minecraft.server.v1_12_R1.PlayerConnection;
 
 public class PlayerConnect implements Listener {
-	@EventHandler
-	public void onPlayerConnect(PlayerJoinEvent e) {
-		Player p = e.getPlayer();
+    private LobbyManager lobbyManager;
+    
+    //Title
+    private boolean sendTitle;
+    private String[] title = new String[2];
+    
+    //GameMode
+    private boolean setGameMode;
+    private GameMode gameMode;
+    
+    public PlayerConnect(LobbyManager lobbyManager) {
+	this.lobbyManager = lobbyManager;
+	FileConfiguration configuration = lobbyManager.getConfig();
 
-		p.teleport(LobbyManager.spawn);
+	sendTitle = configuration.getBoolean("join.title.enable");
+	title[0] = configuration.getString("join.title.title");
+	title[1] = configuration.getString("join.title.subtitle");
 
-		if (LobbyManager.config.getBoolean("join.title.enable"))
-			sendTitle(p, LobbyManager.title[0], LobbyManager.title[1]);
+	setGameMode = configuration.getBoolean("join.gamemode.enable");
+	gameMode = GameMode.valueOf(configuration.getString("join.gamemode.gamemode"));
+    }
 
-		if (LobbyManager.config.getBoolean("join.gamemode.enable")) {
-			if (!p.getPlayer().hasPermission("lobbymanager.gmBypass"))
-				p.setGameMode(LobbyManager.gm);
-		}
-		
-		if(LobbyManager.config.getBoolean("Inventory.give.enable"))
-			LobbyManager.setInventory(p);
-	}
+    @EventHandler
+    public void onPlayerConnect(PlayerJoinEvent e) {
+	Player player = e.getPlayer();
 	
-	private void sendTitle(Player player, String title, String subtitle){
-			title = title.replace("'", "\\'");
-			subtitle = subtitle.replace("'", "\\'");
-			
-            CraftPlayer craftplayer = (CraftPlayer)player;
-            PlayerConnection connection = craftplayer.getHandle().playerConnection;
-            IChatBaseComponent titleJSON = ChatSerializer.a("{'text': '" + title + "'}");
-            IChatBaseComponent subtitleJSON = ChatSerializer.a("{'text': '" + subtitle + "'}");
-            
-            PacketPlayOutTitle timesPacket = new PacketPlayOutTitle(EnumTitleAction.TIMES, titleJSON, 10, 20, 10);
-            PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(EnumTitleAction.TITLE, titleJSON);
-            PacketPlayOutTitle subtitlePacket = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, subtitleJSON);
-            
-            connection.sendPacket(timesPacket);
-            connection.sendPacket(titlePacket);
-            connection.sendPacket(subtitlePacket);
+	player.teleport(lobbyManager.getSpawnConfig().getSpawnLocation());
+
+	if (sendTitle) {
+	    sendTitle(player, title[0], title[1]);
 	}
+
+	if (setGameMode && !player.hasPermission("lobbymanager.gamemode.bypass")) {
+	    player.setGameMode(gameMode);
+	}
+
+	if (!Objects.isNull(lobbyManager.getInventoryManager())) {
+	    lobbyManager.getInventoryManager().sendInventory(player);
+	}
+    }
+
+    //TODO Move and create Reflexion
+    private void sendTitle(Player player, String title, String subtitle) {
+	title = title.replace("'", "\\'");
+	subtitle = subtitle.replace("'", "\\'");
+
+	CraftPlayer craftplayer = (CraftPlayer) player;
+	PlayerConnection connection = craftplayer.getHandle().playerConnection;
+	IChatBaseComponent titleJSON = ChatSerializer.a("{'text': '" + title + "'}");
+	IChatBaseComponent subtitleJSON = ChatSerializer.a("{'text': '" + subtitle + "'}");
+
+	PacketPlayOutTitle timesPacket = new PacketPlayOutTitle(EnumTitleAction.TIMES, titleJSON, 10, 20, 10);
+	PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(EnumTitleAction.TITLE, titleJSON);
+	PacketPlayOutTitle subtitlePacket = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, subtitleJSON);
+
+	connection.sendPacket(timesPacket);
+	connection.sendPacket(titlePacket);
+	connection.sendPacket(subtitlePacket);
+    }
 
 }
