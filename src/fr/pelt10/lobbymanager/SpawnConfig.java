@@ -16,6 +16,7 @@ public class SpawnConfig {
     private JavaPlugin javaPlugin;
     private static final String FILE_NAME = "spawn.yml";
     private static final String CONFIG_PREFIX = "spawn.";
+    private Location spawnLocation;
 
     public SpawnConfig(JavaPlugin javaPlugin) {
 	this.javaPlugin = javaPlugin;
@@ -32,19 +33,22 @@ public class SpawnConfig {
 	} catch (IOException e) {
 	    throw new IllegalStateException("spawn.yml not find in jar !", e);
 	}
+	
+	spawnLocation = new Location(javaPlugin.getServer().getWorld(config.getString(CONFIG_PREFIX + "world")),
+                		    config.getDouble(CONFIG_PREFIX + "x"),
+                		    config.getDouble(CONFIG_PREFIX + "y"),
+                		    config.getDouble(CONFIG_PREFIX + "z"),
+                	     (float)config.getDouble(CONFIG_PREFIX + "pitch"),
+                	     (float)config.getDouble(CONFIG_PREFIX + "yaw"));
     }
 
     public Location getSpawnLocation() {
-	return new Location(javaPlugin.getServer().getWorld(config.getString(CONFIG_PREFIX + "world")),
-			    config.getDouble(CONFIG_PREFIX + "x"),
-			    config.getDouble(CONFIG_PREFIX + "y"),
-			    config.getDouble(CONFIG_PREFIX + "z"),
-		     (float)config.getDouble(CONFIG_PREFIX + "pitch"),
-		     (float)config.getDouble(CONFIG_PREFIX + "yaw"));
+	return spawnLocation;
     }
-
+    
     public void setSpawnLocation(Location location) {
 	try {
+	    spawnLocation = location;
 	    config.set(CONFIG_PREFIX + "world", location.getWorld().getName());
 	    config.set(CONFIG_PREFIX + "x", location.getX());
 	    config.set(CONFIG_PREFIX + "y", location.getY());
