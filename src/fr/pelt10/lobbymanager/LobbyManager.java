@@ -39,7 +39,7 @@ public class LobbyManager extends JavaPlugin {
 	PluginManager pluginManager = getServer().getPluginManager();
 	pluginManager.registerEvents(new PlayerConnect(this), this);
 	pluginManager.registerEvents(new PlayerMove(this), this);
-	pluginManager.registerEvents(new OnPlayerInteractEvent(), this);
+	pluginManager.registerEvents(new OnPlayerInteractEvent(this), this);
 	
 	//Inventory control module
 	if (configuration.getBoolean("inventory.control.enable"))

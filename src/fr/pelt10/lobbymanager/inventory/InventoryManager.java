@@ -34,4 +34,8 @@ public class InventoryManager {
 		inventory.setItem(i, hotbar[i].getItem());
 	}
     }
+    
+    public CustomItem[] getHotbar() {
+	return hotbar;
+    }
 }
