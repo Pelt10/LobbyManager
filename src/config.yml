@@ -12,7 +12,7 @@ antidrop:
   enable: true
 
 #If true players will not fall below the given value.
-noFall:
+nofall:
   enable: true
   level: 40
 

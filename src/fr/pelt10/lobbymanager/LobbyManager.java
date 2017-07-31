@@ -1,9 +1,11 @@
 package fr.pelt10.lobbymanager;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,15 +17,13 @@ import fr.pelt10.lobbymanager.listener.OnPlayerDamageEntityEvent;
 import fr.pelt10.lobbymanager.listener.OnPlayerDropItemEvent;
 import fr.pelt10.lobbymanager.listener.OnPlayerInteractEvent;
 import fr.pelt10.lobbymanager.listener.OnPlayerInventoryEvent;
-import fr.pelt10.lobbymanager.listener.OnPlayerMoveEvent;
+import fr.pelt10.lobbymanager.listener.PlayerMove;
 import fr.pelt10.lobbymanager.listener.PlayerConnect;
 
 public class LobbyManager extends JavaPlugin {
     private Language language;
     private SpawnConfig spawnConfig;
     private InventoryManager inventoryManager;
-
-    private int height;
 
     @Override
     public void onEnable() {
@@ -36,28 +36,25 @@ public class LobbyManager extends JavaPlugin {
 	inventoryManager = new InventoryManager(this);
 
 	// Event
-	PluginManager pm = getServer().getPluginManager();
-	pm.registerEvents(new PlayerConnect(this), this);
-	
+	PluginManager pluginManager = getServer().getPluginManager();
+	pluginManager.registerEvents(new PlayerConnect(this), this);
+	pluginManager.registerEvents(new PlayerMove(this), this);
 	
 	
 	if (config.getBoolean("Inventory.control.enable"))
-	    pm.registerEvents(new OnPlayerInventoryEvent(), this);
+	    pluginManager.registerEvents(new OnPlayerInventoryEvent(), this);
 	if (config.getBoolean("noDamage.enable"))
-	    pm.registerEvents(new OnPlayerDamageEntityEvent(), this);
+	    pluginManager.registerEvents(new OnPlayerDamageEntityEvent(), this);
 	
 	if (configuration.getBoolean("antidrop.enable"))
-	    pm.registerEvents(new Listener() {
+	    pluginManager.registerEvents(new Listener() {
 		@EventHandler
 		public void playerDropEvent(PlayerDropItemEvent event) {
 		    event.setCancelled(true);
 		}
 	    }, this);
 	
-	if (config.getBoolean("noFall.enable"))
-	    pm.registerEvents(new OnPlayerMoveEvent(), this);
-
-	pm.registerEvents(new OnPlayerInteractEvent(), this);
+	pluginManager.registerEvents(new OnPlayerInteractEvent(), this);
 
 	// commands
 	this.getCommand("setspawn").setExecutor(new SetSpawnCmd());
