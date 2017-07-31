@@ -5,4 +5,5 @@ import org.bukkit.entity.Player;
 public interface ItemAction {
 public void onAction(Player player);
 public String getName();
+public ItemAction giveParameters(String arg);
 }

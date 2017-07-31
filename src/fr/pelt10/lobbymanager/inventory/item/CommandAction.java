@@ -5,10 +5,6 @@ import org.bukkit.entity.Player;
 public class CommandAction implements ItemAction {
     private String command;
     
-    public CommandAction(String command) {
-	this.command = command;
-    }
-
     @Override
     public void onAction(Player player) {
 	player.performCommand(command);
@@ -17,6 +13,12 @@ public class CommandAction implements ItemAction {
     @Override
     public String getName() {
 	return "command";
+    }
+
+    @Override
+    public ItemAction giveParameters(String arg) {
+	command = arg;
+	return this;
     }
 
 }

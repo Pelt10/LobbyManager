@@ -1,15 +1,24 @@
 package fr.pelt10.lobbymanager.inventory;
 
+import java.util.Optional;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.common.collect.Sets;
+
+import fr.pelt10.lobbymanager.inventory.item.CommandAction;
+import fr.pelt10.lobbymanager.inventory.item.ItemAction;
+
 public class InventoryManager {
     private CustomItem[] hotbar = new CustomItem[9];
     private static final String PREFIX_GIVE = "inventory.give.";
-
+    private static Set<ItemAction> itemActions = Sets.newHashSet(new CommandAction());
+    
     public InventoryManager(JavaPlugin javaPlugin) {
 	FileConfiguration config = javaPlugin.getConfig();
 
@@ -37,5 +46,13 @@ public class InventoryManager {
     
     public CustomItem[] getHotbar() {
 	return hotbar;
+    }
+    
+    static ItemAction getAction(String name) {
+	Optional<ItemAction> optional = itemActions.stream().filter(action -> action.getName().equals(name)).findFirst();
+	if(optional.isPresent()) {
+	    return optional.get();
+	}
+	throw new IllegalArgumentException(name + " is not a valid ItemAction name !");
     }
 }

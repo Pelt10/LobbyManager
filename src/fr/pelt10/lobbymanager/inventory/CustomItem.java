@@ -14,7 +14,12 @@ public class CustomItem {
 
     public CustomItem(Material material, String action, String name, String enchantName, int enchantLevel) {
 	item = new ItemStack(material);
-	// TODO action
+	if(action.contains(":")) {
+	    String actionName = action.split(":")[0];
+	    itemAction = InventoryManager.getAction(actionName).giveParameters(action.replace(actionName + ":", ""));
+	} else {
+	    itemAction = InventoryManager.getAction("command").giveParameters(action);
+	}
 
 	if (!name.isEmpty()) {
 	    ItemMeta itemMeta = item.getItemMeta();
