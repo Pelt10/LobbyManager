@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.PluginManager;
@@ -43,9 +44,18 @@ public class LobbyManager extends JavaPlugin {
 	
 	if (config.getBoolean("Inventory.control.enable"))
 	    pluginManager.registerEvents(new OnPlayerInventoryEvent(), this);
-	if (config.getBoolean("noDamage.enable"))
-	    pluginManager.registerEvents(new OnPlayerDamageEntityEvent(), this);
 	
+	//noDamage module
+	if (configuration.getBoolean("noDamage.enable")) {
+	    pluginManager.registerEvents(new Listener() {
+		@EventHandler
+		public void entityDamage(EntityDamageEvent event) {
+		    event.setCancelled(true);
+		}
+	    }, this);
+	}
+	
+	//antiDrop module
 	if (configuration.getBoolean("antidrop.enable"))
 	    pluginManager.registerEvents(new Listener() {
 		@EventHandler
