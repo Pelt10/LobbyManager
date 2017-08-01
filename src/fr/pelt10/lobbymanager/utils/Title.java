@@ -3,6 +3,7 @@ package fr.pelt10.lobbymanager.utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -25,9 +26,9 @@ public class Title {
     public Title(String title, String subtitle) {
 	this.titleJson = title.replace("\"", "\\\"");
 	this.subTitleJson = subtitle.replace("\"", "\\\"");
-	
 	try {
-	    Class<?> chatSerializerClazz = Class.forName(NMS + bukkitVersion + ".IChatBaseComponent.ChatSerializer");
+	    Class<?> chatSerializerClazz = Class.forName(NMS + bukkitVersion + ".IChatBaseComponent$ChatSerializer");
+	    Arrays.stream(chatSerializerClazz.getClasses()).forEach(System.out::println);
 	    Method a = chatSerializerClazz.getDeclaredMethod("a", String.class);
 	    this.titleJson = a.invoke(null,"{\"text\": \"" + title.replace("\"", "\\\"") + "\"}");
 	    this.subTitleJson = a.invoke(null,"{\"text\": \"" + subtitle.replace("\"", "\\\"") + "\"}");
@@ -67,14 +68,14 @@ public class Title {
 	    Object connection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);
 
 	    Class<?> packetPlayOutTitleClazz = Class.forName(NMS + bukkitVersion + ".PacketPlayOutTitle");
-	    Class<?> enumTitleActionClazz = Class.forName(NMS + bukkitVersion + ".PacketPlayOutTitle.EnumTitleAction");
+	    Class<?> enumTitleActionClazz = Class.forName(NMS + bukkitVersion + ".PacketPlayOutTitle$EnumTitleAction");
 	    Class<?> iChatBaseComponentClazz = Class.forName(NMS + bukkitVersion + ".IChatBaseComponent");
 	    Object timesPacket = packetPlayOutTitleClazz.getDeclaredConstructor(enumTitleActionClazz, iChatBaseComponentClazz, int.class, int.class, int.class).newInstance(Enum.valueOf((Class<Enum>) enumTitleActionClazz, "TIMES"), titleJson, fadeIn, stay, fadeOut);
 	    Constructor<?> packetPlayOutTitleConstructor = packetPlayOutTitleClazz.getConstructor(enumTitleActionClazz, iChatBaseComponentClazz);
 	    Object titlePacket = packetPlayOutTitleConstructor.newInstance(Enum.valueOf((Class<Enum>) enumTitleActionClazz, "TITLE"), titleJson);
 	    Object subtitlePacket = packetPlayOutTitleConstructor.newInstance(Enum.valueOf((Class<Enum>) enumTitleActionClazz, "SUBTITLE"), subTitleJson);
-
-	    Method sendPacketConnection = connection.getClass().getDeclaredMethod("sendPacket", packetPlayOutTitleClazz);
+	    
+	    Method sendPacketConnection = connection.getClass().getDeclaredMethod("sendPacket", Class.forName(NMS + bukkitVersion + ".Packet"));
 	    sendPacketConnection.invoke(connection, timesPacket);
 	    sendPacketConnection.invoke(connection, titlePacket);
 	    sendPacketConnection.invoke(connection, subtitlePacket);
