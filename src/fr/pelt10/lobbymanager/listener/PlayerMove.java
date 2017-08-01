@@ -17,7 +17,7 @@ public class PlayerMove implements Listener {
 	this.lobbyManager = lobbyManager;
 	FileConfiguration config = lobbyManager.getConfig();
 	teleportOnFall = config.getBoolean("nofall.enable");
-	height = config.getInt("noFall.level");
+	height = config.getInt("nofall.level");
     }
 
     @EventHandler
