@@ -22,9 +22,7 @@ public class PlayerInteract implements Listener {
     
     public PlayerInteract(LobbyManager lobbyManager) {
 	this.lobbyManager = lobbyManager;
-	lobbyManager.getServer().getScheduler().runTaskTimerAsynchronously(lobbyManager, () -> {
-	    lastPlayerLocInteract.clear();
-	}, 0L, 10L);
+	lobbyManager.getServer().getScheduler().runTaskTimerAsynchronously(lobbyManager, () -> lastPlayerLocInteract.clear(), 0L, 10L);
     }
     
     @EventHandler

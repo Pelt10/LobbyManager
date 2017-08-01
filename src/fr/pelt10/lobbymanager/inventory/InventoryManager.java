@@ -2,7 +2,9 @@ package fr.pelt10.lobbymanager.inventory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -58,7 +60,7 @@ public class InventoryManager {
 	    try {
 		return itemActions.get(name).newInstance();
 	    } catch (InstantiationException | IllegalAccessException e) {
-		e.printStackTrace();
+		Bukkit.getLogger().log(Level.SEVERE, e.getMessage(), e);
 	    }
 	}
 	throw new IllegalArgumentException(name + " is not a valid ItemAction name !");
