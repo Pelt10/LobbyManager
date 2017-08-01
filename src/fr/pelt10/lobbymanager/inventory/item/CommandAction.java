@@ -11,11 +11,6 @@ public class CommandAction implements ItemAction {
     }
 
     @Override
-    public String getName() {
-	return "command";
-    }
-
-    @Override
     public ItemAction giveParameters(String arg) {
 	command = arg;
 	return this;
