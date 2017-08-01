@@ -4,18 +4,13 @@ import java.util.Objects;
 
 import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import fr.pelt10.lobbymanager.LobbyManager;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
+import fr.pelt10.lobbymanager.utils.Title;
 
 public class PlayerConnect implements Listener {
     private LobbyManager lobbyManager;
@@ -47,7 +42,7 @@ public class PlayerConnect implements Listener {
 	player.teleport(lobbyManager.getSpawnConfig().getSpawnLocation());
 
 	if (sendTitle) {
-	    sendTitle(player, title[0], title[1]);
+	    new Title(title[0], title[1]).setTimes(10, 20, 10).sendTitle(player);
 	}
 
 	if (setGameMode && !player.hasPermission("lobbymanager.gamemode.bypass")) {
@@ -58,24 +53,4 @@ public class PlayerConnect implements Listener {
 	    lobbyManager.getInventoryManager().sendInventory(player);
 	}
     }
-
-    //TODO Move and create Reflexion
-    private void sendTitle(Player player, String title, String subtitle) {
-	title = title.replace("\"", "\\\"");
-	subtitle = subtitle.replace("\"", "\\\"");
-
-	CraftPlayer craftplayer = (CraftPlayer) player;
-	PlayerConnection connection = craftplayer.getHandle().playerConnection;
-	IChatBaseComponent titleJSON = ChatSerializer.a("{\"text\": \"" + title + "\"}");
-	IChatBaseComponent subtitleJSON = ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
-
-	PacketPlayOutTitle timesPacket = new PacketPlayOutTitle(EnumTitleAction.TIMES, titleJSON, 10, 20, 10);
-	PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(EnumTitleAction.TITLE, titleJSON);
-	PacketPlayOutTitle subtitlePacket = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, subtitleJSON);
-
-	connection.sendPacket(timesPacket);
-	connection.sendPacket(titlePacket);
-	connection.sendPacket(subtitlePacket);
-    }
-
 }
